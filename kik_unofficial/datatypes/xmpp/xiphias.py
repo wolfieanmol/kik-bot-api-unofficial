@@ -110,6 +110,7 @@ class UsersResponse(XMPPResponse):
         response = GetUsersResponse()
         response.ParseFromString(text)
         self.users = [UsersResponseUser(user) for user in response.users]
+        self.days = [UsersResponseUser(user).creation_date_seconds for user in response.users]
 
 
 class UsersByAliasRequest(XiphiasRequest):
