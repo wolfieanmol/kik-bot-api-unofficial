@@ -11,6 +11,6 @@ kik_version_15_21_info = {'kik_version': '15.21.0.22201', 'classes_dex_sha1_dige
 
 
 device_id = "62030843678b7376a707ca3d11e87836"  # random 16 bytes. you can set it to anything, but stick with it
-kik_version_info = kik_version_14_5_info        # a kik version that's not updated might cause a captcha on login
+kik_version_info = kik_version_15_21_info        # a kik version that's not updated might cause a captcha on login
 android_id = "849d4ffb0c020de6"                 # random 8 bytes. you can set it to anything, but stick with it
 

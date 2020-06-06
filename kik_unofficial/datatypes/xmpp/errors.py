@@ -1,3 +1,6 @@
+import os
+from threading import Thread
+import time
 from bs4 import BeautifulSoup
 
 from kik_unofficial.datatypes.xmpp.base_elements import XMPPResponse
@@ -61,10 +64,34 @@ class LoginError(KikError):
         if not self.is_captcha():
             return
         print("To continue, complete the captcha in this URL using a browser: " + self.captcha_url)
-        captcha_response = input("Next, intercept the request starting with 'https://kik.com/captcha-url' using F12, "
-                                 "and paste the response parameter here: ")
+
+        path = os.path.expanduser("~" + "/captcha_url.txt")
+        with open(path, "w") as f:
+            f.write(self.captcha_url)
+
+        # TODO file transfer to doctor
+
+        # captcha_response = input("Next, intercept the request starting with 'https://kik.com/captcha-url' using F12, "
+        #                          "and paste the response parameter here: ")
+
+        t = Thread(target=self.check_response_file, args=())
+        t.daemon = True
+        t.start()
+        t.join()
+        captcha_response = self.response
+
         kik_client.login(kik_client.username, kik_client.password, captcha_response)
 
-    def __str__(self):
-        return self.message
+    def check_response_file(self):
+        path = os.path.expanduser("~" + "/response_file.txt")
+        while True:
+            time.sleep(2)
+            if os.path.exists(path):
+                with open(path, "r") as f:
+                    self.response = f.read()
+                os.remove(path)
+                break
 
+
+def __str__(self):
+    return self.message
